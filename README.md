@@ -75,6 +75,8 @@ Provide the following REST API:
 
 ## Delete a Course
 
+### Request
+
 `DELETE /courses/{id}`
 
     http://localhost:8080/courses/11
@@ -256,6 +258,316 @@ Sort Direction: ASC | DESC
                         "id": 1002,
                         "name": "Jane",
                         "surname": "Taylor"
+                    }
+                ]
+            }
+        ],
+        "pageable": {
+            "sort": {
+                "empty": true,
+                "sorted": false,
+                "unsorted": true
+            },
+            "offset": 0,
+            "pageNumber": 0,
+            "pageSize": 50,
+            "paged": true,
+            "unpaged": false
+        },
+        "last": true,
+        "totalPages": 1,
+        "totalElements": 2,
+        "size": 50,
+        "number": 0,
+        "sort": {
+            "empty": true,
+            "sorted": false,
+            "unsorted": true
+        },
+        "first": true,
+        "numberOfElements": 2,
+        "empty": false
+    }
+
+## Get All Students
+
+### Request
+
+`GET /students`
+
+    http://localhost:8080/students
+
+### Response
+
+    [{"id":1001,"name":"John","surname":"Smith"},{"id":1002,"name":"Jane","surname":"Taylor"},{"id":1003,"name":"Rachel","surname":"Brown"},{"id":1004,"name":"Tom","surname":"Williams"},{"id":1005,"name":"Daisy","surname":"Johnson"},{"id":1006,"name":"Sophie","surname":"Turner"},{"id":1007,"name":"Daniel","surname":"Green"},{"id":1008,"name":"Robert","surname":"Harris"},{"id":1009,"name":"James","surname":"Walker"},{"id":1010,"name":"Mary","surname":"White"}]
+
+## Get a Student By Id
+
+### Request
+
+`GET /students/{id}`
+
+    http://localhost:8080/students/1001
+
+### Response
+
+    {
+        "id": 1001,
+        "name": "John",
+        "surname": "Smith"
+    }
+
+## Create a Student
+
+### Request
+
+`POST /students`
+
+    http://localhost:8080/students
+
+#### Request Body
+        {
+            "name": "Esra",
+            "surname": "Yurt"
+        }
+
+## Delete a Student
+
+### Request
+
+`DELETE /students/{id}`
+
+    http://localhost:8080/students/1011
+
+## Update a Student
+
+### Request
+
+`PUT /students`
+
+    http://localhost:8080/students
+
+#### Request Body
+    {
+        "id": 1001,
+        "name": "Harry",
+        "surname": "Brown"
+    }
+
+## Get Students Without Courses
+
+### Request
+
+`GET /students/withoutCourses`
+
+    http://localhost:8080/students/withoutCourses
+
+### Response
+
+    [
+        {
+            "id": 1012,
+            "name": "Esra",
+            "surname": "Yurt",
+            "courseDTOList": []
+        }
+    ]
+
+## Register to Courses
+
+### Request
+
+`POST /students/registerToCourses`
+
+    http://localhost:8080/students/registerToCourses
+
+#### Request Body
+
+    {
+        "id": 1001,
+        "courseIdList": [8, 9]
+    }
+
+### Response
+
+    {
+        "id": 1001,
+        "name": "Harry",
+        "surname": "Brown",
+        "courseDTOList": [
+            {
+                "id": 2,
+                "name": "Physics"
+            },
+            {
+                "id": 3,
+                "name": "English"
+            },
+            {
+                "id": 9,
+                "name": "French"
+            },
+            {
+                "id": 8,
+                "name": "Spanish"
+            },
+            {
+                "id": 1,
+                "name": "Geometry"
+            }
+        ]
+    }
+
+## Query Students
+
+Query students with filters
+
+Query Operator: EQUAL | NOT_EQUAL | LIKE | IN
+
+Field Type: STRING | INTEGER | BOOLEAN | LONG | DOUBLE | CHAR
+
+Sort Direction: ASC | DESC
+
+### Request
+
+`POST /students/query`
+
+    http://localhost:8080/students/query
+
+#### Request Body
+
+    {
+        "filters": [
+            {
+                "field": "id",     
+                "operator": "EQUAL",
+                "fieldType": "INTEGER",
+                "value": 1001
+            }
+        ],
+        "sortFields": [
+            {
+                "field": "name",
+                "direction": "ASC"
+            }
+        ],
+        "page": 0,
+        "size": 50
+    }
+
+### Response
+
+    {
+        "content": [
+            {
+                "id": 1001,
+                "name": "Harry",
+                "surname": "Brown",
+                "courseDTOList": [
+                    {
+                        "id": 3,
+                        "name": "English"
+                    },
+                    {
+                        "id": 1,
+                        "name": "Geometry"
+                    },
+                    {
+                        "id": 2,
+                        "name": "Physics"
+                    }
+                ]
+            }
+        ],
+        "pageable": {
+            "sort": {
+                "empty": true,
+                "sorted": false,
+                "unsorted": true
+            },
+            "offset": 0,
+            "pageNumber": 0,
+            "pageSize": 50,
+            "paged": true,
+            "unpaged": false
+        },
+        "last": true,
+        "totalPages": 1,
+        "totalElements": 1,
+        "size": 50,
+        "number": 0,
+        "sort": {
+            "empty": true,
+            "sorted": false,
+            "unsorted": true
+        },
+        "first": true,
+        "numberOfElements": 1,
+        "empty": false
+    }
+
+## Query Students For a Specific Course
+
+### Request
+
+`POST /students/query`
+
+    http://localhost:8080/students/query
+
+#### Request Body
+    {
+        "filters": [
+            {
+                "field": "courses.id",     
+                "operator": "EQUAL",
+                "fieldType": "INTEGER",
+                "value": 2
+            }
+        ],
+        "sortFields": [
+            {
+                "field": "name",
+                "direction": "ASC"
+            }
+        ],
+        "page": 0,
+        "size": 50
+    }
+
+### Response
+    {
+        "content": [
+            {
+                "id": 1001,
+                "name": "Harry",
+                "surname": "Brown",
+                "courseDTOList": [
+                    {
+                        "id": 3,
+                        "name": "English"
+                    },
+                    {
+                        "id": 2,
+                        "name": "Physics"
+                    },
+                    {
+                        "id": 1,
+                        "name": "Geometry"
+                    }
+                ]
+            },
+            {
+                "id": 1002,
+                "name": "Jane",
+                "surname": "Taylor",
+                "courseDTOList": [
+                    {
+                        "id": 3,
+                        "name": "English"
+                    },
+                    {
+                        "id": 2,
+                        "name": "Physics"
                     }
                 ]
             }
