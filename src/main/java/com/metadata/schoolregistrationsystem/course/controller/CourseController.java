@@ -50,7 +50,7 @@ public class CourseController {
         courseService.delete(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     public void update(@Valid @RequestBody UpdateCourseDTO updateCourseDTO) {
         courseService.update(UpdateCourseMapper.INSTANCE.dtoToEntity(updateCourseDTO));
     }

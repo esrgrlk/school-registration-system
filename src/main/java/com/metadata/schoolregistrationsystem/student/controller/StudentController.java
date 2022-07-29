@@ -47,7 +47,7 @@ public class StudentController {
         studentService.delete(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     public void update(@Valid @RequestBody UpdateStudentDTO updateStudentDTO) {
         studentService.update(UpdateStudentMapper.INSTANCE.dtoToEntity(updateStudentDTO));
     }

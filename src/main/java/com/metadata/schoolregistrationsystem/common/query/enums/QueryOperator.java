@@ -41,13 +41,6 @@ public enum QueryOperator {
             }
             return cb.and(inClause, predicate);
         }
-    },
-
-    NULL {
-        public <T> Predicate build(Root<T> root, CriteriaBuilder cb, FilterDTO filter, Predicate predicate) {
-            Join<?, ?> join = root.join(filter.getField(), JoinType.INNER);
-            return cb.isNull(join);
-        }
     };
 
     public abstract <T> Predicate build(Root<T> root, CriteriaBuilder cb, FilterDTO filter, Predicate predicate);
