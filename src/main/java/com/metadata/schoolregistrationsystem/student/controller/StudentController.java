@@ -22,32 +22,32 @@ import java.util.stream.Collectors;
 @RestController
 @ResponseStatus(HttpStatus.OK)
 @RequiredArgsConstructor
-@RequestMapping("/student")
+@RequestMapping("/students")
 public class StudentController {
 
     private final StudentService studentService;
 
-    @GetMapping("/getAllStudents")
+    @GetMapping
     public List<StudentDTO> getAllStudents() {
         return studentService.getAllStudents().stream().map(StudentMapper.INSTANCE::entityToDto).collect(Collectors.toList());
     }
 
-    @GetMapping("/getStudentById")
-    public StudentDTO getStudentById(@RequestParam Long id) {
+    @GetMapping("/{id}")
+    public StudentDTO getStudentById(@PathVariable Long id) {
         return StudentMapper.INSTANCE.entityToDto(studentService.getStudentById(id));
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public void create(@Valid @RequestBody CreateStudentDTO createStudentDTO) {
         studentService.create(CreateStudentMapper.INSTANCE.dtoToEntity(createStudentDTO));
     }
 
-    @DeleteMapping("/delete")
-    public void delete(@RequestParam Long id) {
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
         studentService.delete(id);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/{id}")
     public void update(@Valid @RequestBody UpdateStudentDTO updateStudentDTO) {
         studentService.update(UpdateStudentMapper.INSTANCE.dtoToEntity(updateStudentDTO));
     }
@@ -65,7 +65,7 @@ public class StudentController {
         return studentService.query(specification, pageable).map(StudentCourseMapper.INSTANCE::entityToDto);
     }
 
-    @GetMapping("/getStudentsWithoutCourses")
+    @GetMapping("/withoutCourses")
     public List<StudentCourseDTO> getStudentsWithoutCourses() {
         return studentService.getStudentsWithoutCourses().stream().map(StudentCourseMapper.INSTANCE::entityToDto).collect(Collectors.toList());
     }

@@ -26,7 +26,7 @@ public class CourseService {
 
     @Transactional(readOnly = true)
     public Course getCourseById(Long id) {
-        return courseRepository.findById(id).orElse(null);
+        return retrieveByIdOrElseThrow(id);
     }
 
     @Transactional(readOnly = true)
@@ -41,13 +41,13 @@ public class CourseService {
 
     @Transactional
     public void delete(Long id) {
-        Course course = retriveByIdOrElseThrow(id);
+        Course course = retrieveByIdOrElseThrow(id);
         courseRepository.delete(course);
     }
 
     @Transactional
     public void update(Course course) {
-        Course existingCourse = retriveByIdOrElseThrow(course.getId());
+        Course existingCourse = retrieveByIdOrElseThrow(course.getId());
         existingCourse.update(course);
     }
 
@@ -61,11 +61,8 @@ public class CourseService {
         return courseRepository.findByStudents(null);
     }
 
-    private Course retriveByIdOrElseThrow(Long id) {
-        Course course = courseRepository.findById(id).orElse(null);
-        if (course == null) {
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, CourseMessages.ERROR_COURSE_NOT_FOUND);
-        }
-        return course;
+    private Course retrieveByIdOrElseThrow(Long id) {
+        return courseRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, CourseMessages.ERROR_COURSE_NOT_FOUND));
     }
 }

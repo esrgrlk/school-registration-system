@@ -29,7 +29,7 @@ public class StudentService {
 
     @Transactional(readOnly = true)
     public Student getStudentById(Long id) {
-        return studentRepository.findById(id).orElse(null);
+        return retrieveByIdOrElseThrow(id);
     }
 
     @Transactional
@@ -39,26 +39,25 @@ public class StudentService {
 
     @Transactional
     public void delete(Long id) {
-        Student student = retriveByIdOrElseThrow(id);
+        Student student = retrieveByIdOrElseThrow(id);
         studentRepository.delete(student);
     }
 
     @Transactional
     public void update(Student student) {
-        Student existingStudent = retriveByIdOrElseThrow(student.getId());
+        Student existingStudent = retrieveByIdOrElseThrow(student.getId());
         existingStudent.update(student);
     }
 
     @Transactional
     public Student registerToCourses(Long id, List<Long> courseIdList) {
-        Student student = retriveByIdOrElseThrow(id);
+        Student student = retrieveByIdOrElseThrow(id);
 
-        List<Course> courses = courseService.getAllCoursesById(courseIdList);
-
-        if (!student.hasEnoughCourseCapacity(courses.size())) {
+        if (!student.hasEnoughCourseCapacity(courseIdList.size())) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, StudentMessages.ERROR_STUDENT_MAX_COURSE_CAPACITY);
         }
 
+        List<Course> courses = courseService.getAllCoursesById(courseIdList);
         for (Course course : courses) {
             if (!course.hasEnoughStudentCapacity()) {
                 throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, StudentMessages.ERROR_COURSE_MAX_STUDENT_CAPACITY);
@@ -78,11 +77,8 @@ public class StudentService {
         return studentRepository.findByCourses(null);
     }
 
-    private Student retriveByIdOrElseThrow(Long id) {
-        Student student = studentRepository.findById(id).orElse(null);
-        if (student == null) {
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, StudentMessages.ERROR_STUDENT_NOT_FOUND);
-        }
-        return student;
+    private Student retrieveByIdOrElseThrow(Long id) {
+        return studentRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, StudentMessages.ERROR_STUDENT_NOT_FOUND));
     }
 }

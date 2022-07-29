@@ -25,32 +25,32 @@ import java.util.stream.Collectors;
 @RestController
 @ResponseStatus(HttpStatus.OK)
 @RequiredArgsConstructor
-@RequestMapping("/course")
+@RequestMapping("/courses")
 public class CourseController {
 
     private final CourseService courseService;
 
-    @GetMapping("/getAllCourses")
+    @GetMapping
     public List<CourseDTO> getAllCourses() {
         return courseService.getAllCourses().stream().map(CourseMapper.INSTANCE::entityToDto).collect(Collectors.toList());
     }
 
-    @GetMapping("/getCourseById")
-    public CourseDTO getCourseById(@RequestParam Long id) {
+    @GetMapping("/{id}")
+    public CourseDTO getCourseById(@PathVariable Long id) {
         return CourseMapper.INSTANCE.entityToDto(courseService.getCourseById(id));
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public void create(@Valid @RequestBody CreateCourseDTO createCourseDTO) {
         courseService.create(CreateCourseMapper.INSTANCE.dtoToEntity(createCourseDTO));
     }
 
-    @DeleteMapping("/delete")
-    public void delete(@RequestParam Long id) {
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
         courseService.delete(id);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/{id}")
     public void update(@Valid @RequestBody UpdateCourseDTO updateCourseDTO) {
         courseService.update(UpdateCourseMapper.INSTANCE.dtoToEntity(updateCourseDTO));
     }
@@ -62,7 +62,7 @@ public class CourseController {
         return courseService.query(specification, pageable).map(CourseStudentMapper.INSTANCE::entityToDto);
     }
 
-    @GetMapping("/getCoursesWithoutStudents")
+    @GetMapping("/withoutStudents")
     public List<CourseStudentDTO> getCoursesWithoutStudents() {
         return courseService.getCoursesWithoutStudents().stream().map(CourseStudentMapper.INSTANCE::entityToDto).collect(Collectors.toList());
     }

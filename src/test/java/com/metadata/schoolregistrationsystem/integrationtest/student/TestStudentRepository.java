@@ -6,6 +6,7 @@ import com.metadata.schoolregistrationsystem.student.entity.Student;
 import com.metadata.schoolregistrationsystem.student.repository.StudentRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -13,11 +14,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace= NONE)
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class TestStudentRepository {
 
     @Autowired
@@ -31,17 +30,5 @@ public class TestStudentRepository {
         Optional<Course> course = courseRepository.findById(2L);
         List<Student> studentList = studentRepository.findByCourses(course.get());
         assertEquals(studentList.size(), 2);
-    }
-
-    @Test
-    public void testCreate() {
-        Student student = new Student();
-        student.setName("Lisa");
-        student.setSurname("Park");
-
-        studentRepository.save(student);
-
-        assertNotNull(student.getId());
-        assertNotNull(student.getCreatedDate());
     }
 }
