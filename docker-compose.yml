@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  app:
+    image: school-registration-system
+    ports:
+      - '8080:8080'
+    environment:
+      - spring.datasource.url=jdbc:mysql://mysqldb:3306/school?useSSL=false
+    networks:
+      - springmysql-net
+    depends_on:
+      - mysqldb
+
+  mysqldb:
+    image: mysql:8
+    restart: always
+    networks:
+      - springmysql-net
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: school
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./dbdata:/var/lib/mysql
+
+networks:
+  springmysql-net:

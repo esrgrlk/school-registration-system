@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+    <changeSet id="course" author="esrayg" context="data">
+        <insert tableName="course"> <column name="id" valueNumeric="1" /> <column name="name" value="Mathematics" />  </insert>
+        <insert tableName="course"> <column name="id" valueNumeric="2" /> <column name="name" value="Physics"     />  </insert>
+        <insert tableName="course"> <column name="id" valueNumeric="3" /> <column name="name" value="English"     />  </insert>
+        <insert tableName="course"> <column name="id" valueNumeric="4" /> <column name="name" value="History"     />  </insert>
+        <insert tableName="course"> <column name="id" valueNumeric="5" /> <column name="name" value="Economics"   />  </insert>
+        <insert tableName="course"> <column name="id" valueNumeric="6" /> <column name="name" value="Biology"     />  </insert>
+        <insert tableName="course"> <column name="id" valueNumeric="7" /> <column name="name" value="Chemistry"   />  </insert>
+        <insert tableName="course"> <column name="id" valueNumeric="8" /> <column name="name" value="Spanish"     />  </insert>
+        <insert tableName="course"> <column name="id" valueNumeric="9" /> <column name="name" value="French"      />  </insert>
+        <insert tableName="course"> <column name="id" valueNumeric="10"/> <column name="name" value="Music"       />  </insert>
+    </changeSet>
+</databaseChangeLog>

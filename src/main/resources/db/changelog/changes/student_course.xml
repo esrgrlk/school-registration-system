@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+    <changeSet id="260722 10:02" author="esragy" context="sql">
+        <sql>
+            CREATE TABLE student_course (
+                                            student_id bigint NOT NULL,
+                                            course_id bigint NOT NULL,
+                                            PRIMARY KEY (student_id, course_id),
+                                            FOREIGN KEY (student_id) REFERENCES student (id),
+                                            FOREIGN KEY (course_id) REFERENCES course (id)
+                                        );
+
+            CREATE INDEX idx_student_course_student_id ON student_course (student_id);
+            CREATE INDEX idx_student_course_course_id ON student_course (course_id);
+        </sql>
+    </changeSet>
+</databaseChangeLog>
